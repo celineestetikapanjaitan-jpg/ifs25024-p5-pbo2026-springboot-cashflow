@@ -1,0 +1,69 @@
+/* Cursor pointer pada semua kontrol interaktif; disabled memakai cursor default. */
+vaadin-button,
+vaadin-menu-bar-item,
+vaadin-menu-bar-button,
+vaadin-context-menu-item,
+vaadin-tab,
+vaadin-drawer-toggle,
+vaadin-upload-file button,
+vaadin-upload vaadin-button,
+vaadin-side-nav-item,
+vaadin-side-nav-item::part(link),
+vaadin-grid-sorter,
+a {
+    cursor: pointer;
+}
+
+vaadin-button[disabled],
+vaadin-menu-bar-button[disabled] {
+    cursor: default;
+}
+
+.app-title {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.app-navbar {
+    padding: 0.5rem 1rem;
+}
+
+.page-card {
+    background: var(--lumo-base-color);
+    border: 1px solid var(--lumo-contrast-10pct);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 380px;
+    padding: 1.5rem;
+    background: var(--lumo-base-color);
+    border: 1px solid var(--lumo-contrast-10pct);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Dialog modal: header biru primer, footer abu-abu terang, tombol di sisi kanan. */
+vaadin-dialog-overlay::part(header) {
+    background: #2563EB;
+    color: #FFFFFF;
+}
+
+vaadin-dialog-overlay::part(title) {
+    color: #FFFFFF;
+}
+
+vaadin-dialog-overlay::part(footer) {
+    background: #F3F4F6;
+    border-top: 1px solid #E5E7EB;
+    justify-content: flex-end;
+}
+
+/* Indikator loading global: batang berpendar di atas layar. */
+.v-loading-indicator {
+    height: 4px;
+    background: linear-gradient(90deg, #2563EB, #60A5FA, #2563EB);
+    box-shadow: 0 0 8px #2563EB;
+}
