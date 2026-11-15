@@ -32,8 +32,8 @@ server:
         http-only: true
 
 app:
-  root-username: ${ROOT_USERNAME:admin}
-  root-password: ${ROOT_PASSWORD:admin}
+  root-username: ${ROOT_USERNAME:ifs25024}
+  root-password: ${ROOT_PASSWORD:Celineitdel30}
   upload-dir: ${UPLOAD_DIR:uploads}
 
 vaadin:
