@@ -50,6 +50,7 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
         navbar.setAlignItems(FlexComponent.Alignment.CENTER);
         navbar.expand(title);
         navbar.addClassName("app-navbar");
+        navbar.getElement().setAttribute("role", "banner");
 
         addToNavbar(navbar);
         addToDrawer(sideNav);
