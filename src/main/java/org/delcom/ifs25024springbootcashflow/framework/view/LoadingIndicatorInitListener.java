@@ -2,35 +2,77 @@ package org.delcom.ifs25024springbootcashflow.framework.view;
 
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
+import org.jsoup.nodes.DataNode;
+import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 /**
- * Mengatur indikator loading global Vaadin agar responsif:
- * muncul setelah 150 ms, berubah setelah 600 ms, dan 1500 ms.
+ * Mengatur indikator loading global Vaadin (muncul setelah 150 ms, berubah setelah 600 ms
+ * dan 1500 ms) serta melengkapi halaman awal (bootstrap) agar tidak kosong selama Vaadin
+ * belum selesai menggambar tampilan.
  */
 @Component
 public class LoadingIndicatorInitListener implements VaadinServiceInitListener {
 
-    private static final String MARK_CONNECTION_INDICATOR = """
-            const mark = () => document.querySelectorAll('vaadin-connection-indicator').forEach(el => {
-                el.setAttribute('role', 'status');
-                el.setAttribute('aria-live', 'polite');
-            });
-            mark();
-            new MutationObserver(mark).observe(document.body, { childList: true });
+    private static final String DEFAULT_TITLE = "Cashflow";
+
+    /** Kerangka awal: judul, landmark main, dan h1 sudah ada sebelum JavaScript Vaadin selesai. */
+    private static final String BOOT_SHELL = """
+            <main id="boot-shell" style="position:fixed;inset:0;z-index:2147483000;background:#fff;color:#1b2a3a;\
+            font-family:system-ui,sans-serif;padding:2rem;">\
+            <h1 style="margin:0 0 .5rem;font-size:1.75rem;">Cashflow</h1>\
+            <p style="margin:0;">Memuat aplikasi...</p></main>""";
+
+    /**
+     * Berjalan segera setelah halaman dimuat: menandai indikator koneksi sebagai live region
+     * (status) dan membuang kerangka awal begitu tampilan sebenarnya (role=main) muncul.
+     */
+    private static final String BOOT_SCRIPT = """
+            (function () {
+                var shellRemoved = false;
+                var update = function () {
+                    document.querySelectorAll('vaadin-connection-indicator').forEach(function (el) {
+                        if (el.getAttribute('role') !== 'status') {
+                            el.setAttribute('role', 'status');
+                            el.setAttribute('aria-live', 'polite');
+                        }
+                    });
+                    if (!shellRemoved) {
+                        var shell = document.getElementById('boot-shell');
+                        if (!shell) {
+                            shellRemoved = true;
+                        } else if (document.querySelector('[role="main"]:not(#boot-shell)')) {
+                            shell.remove();
+                            shellRemoved = true;
+                        }
+                    }
+                };
+                new MutationObserver(update).observe(document.body, { childList: true, subtree: true });
+                setTimeout(function () {
+                    var shell = document.getElementById('boot-shell');
+                    if (shell) { shell.remove(); }
+                    shellRemoved = true;
+                }, 15000);
+                update();
+            })();
             """;
 
     @Override
     public void serviceInit(ServiceInitEvent event) {
+        event.addIndexHtmlRequestListener(response -> {
+            Document document = response.getDocument();
+            if (document.title().isBlank()) {
+                document.title(DEFAULT_TITLE);
+            }
+            document.body().prepend(BOOT_SHELL);
+            document.body().appendElement("script").appendChild(new DataNode(BOOT_SCRIPT));
+        });
+
         event.getSource().addUIInitListener(uiEvent -> {
             var config = uiEvent.getUI().getLoadingIndicatorConfiguration();
             config.setFirstDelay(150);
             config.setSecondDelay(600);
             config.setThirdDelay(1500);
-
-            // Indikator koneksi bawaan Vaadin ditandai sebagai live region (status) agar
-            // tidak dianggap konten di luar landmark oleh pemeriksa aksesibilitas.
-            uiEvent.getUI().getPage().executeJs(MARK_CONNECTION_INDICATOR);
         });
     }
 }
