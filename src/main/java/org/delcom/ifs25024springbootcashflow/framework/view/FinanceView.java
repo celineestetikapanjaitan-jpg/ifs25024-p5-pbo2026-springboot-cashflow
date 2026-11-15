@@ -77,6 +77,7 @@ public class FinanceView extends VerticalLayout implements BeforeEnterObserver {
         setSizeFull();
         setPadding(true);
         setSpacing(true);
+        getElement().setAttribute("role", "main");
 
         incomeTotal.setId("income-total");
         expenseTotal.setId("expense-total");
@@ -102,40 +103,24 @@ public class FinanceView extends VerticalLayout implements BeforeEnterObserver {
 
     // ---------------------------------------------------------------- ringkasan
 
-    private HorizontalLayout buildSummaryCards() {
-        HorizontalLayout summary = new HorizontalLayout(
-                createSummaryCard("Total Transaksi", totalCount, "#E0E7FF", "#4338CA"),
-                createSummaryCard("Total Pemasukan", incomeTotal, "#DCFCE7", "#16A34A"),
-                createSummaryCard("Total Pengeluaran", expenseTotal, "#FEE2E2", "#DC2626"),
-                createSummaryCard("Saldo", balanceLabel, "#DBEAFE", "#1D4ED8")
+    private Div buildSummaryCards() {
+        Div summary = new Div(
+                createSummaryCard("Total Transaksi", totalCount, "total"),
+                createSummaryCard("Total Pemasukan", incomeTotal, "income"),
+                createSummaryCard("Total Pengeluaran", expenseTotal, "expense"),
+                createSummaryCard("Saldo", balanceLabel, "balance")
         );
-        summary.setWidthFull();
-        summary.getStyle().set("align-items", "stretch").set("flex-wrap", "wrap");
+        summary.addClassName("summary-cards");
         return summary;
     }
 
-    private Div createSummaryCard(String label, Span value, String background, String accent) {
+    private Div createSummaryCard(String label, Span value, String kind) {
         Span caption = new Span(label);
-        caption.getStyle()
-                .set("display", "block")
-                .set("font-size", "0.875rem")
-                .set("color", accent);
-
-        value.getStyle()
-                .set("display", "block")
-                .set("margin-top", "0.35rem")
-                .set("font-size", "1.5rem")
-                .set("font-weight", "700")
-                .set("color", accent);
+        caption.addClassName("summary-caption");
+        value.addClassName("summary-value");
 
         Div card = new Div(caption, value);
-        card.getStyle()
-                .set("flex", "1")
-                .set("min-width", "200px")
-                .set("background", background)
-                .set("border-left", "6px solid " + accent)
-                .set("border-radius", "12px")
-                .set("padding", "1rem 1.1rem");
+        card.addClassNames("summary-card", "summary-" + kind);
         return card;
     }
 
@@ -217,11 +202,13 @@ public class FinanceView extends VerticalLayout implements BeforeEnterObserver {
     // ------------------------------------------------------------------ toolbar
 
     private void configureToolbar() {
+        searchField.setLabel("Keterangan");
         searchField.setPlaceholder("Cari keterangan...");
         searchField.setPrefixComponent(VaadinIcon.SEARCH.create());
         searchField.setClearButtonVisible(true);
 
-        sortBox.setPlaceholder("Urutkan...");
+        sortBox.setLabel("Urutkan");
+        sortBox.setPlaceholder("Pilih urutan...");
         sortBox.setItems(SortOption.values());
         sortBox.setItemLabelGenerator(presenter::formatSortOption);
         sortBox.addValueChangeListener(event -> applySort(event.getValue()));
@@ -242,8 +229,9 @@ public class FinanceView extends VerticalLayout implements BeforeEnterObserver {
         HorizontalLayout toolbar = new HorizontalLayout(
                 searchField, searchButton, sortBox, refreshButton, incomeButton, expenseButton);
         toolbar.setWidthFull();
+        toolbar.addClassName("toolbar");
         toolbar.getStyle().set("flex-wrap", "wrap");
-        toolbar.setFlexGrow(1, searchField);
+        toolbar.setDefaultVerticalComponentAlignment(Alignment.END);
         return toolbar;
     }
 

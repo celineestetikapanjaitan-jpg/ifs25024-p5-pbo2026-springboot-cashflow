@@ -6,7 +6,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -64,7 +64,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         progress.setVisible(false);
 
         Div card = new Div(
-                new H2("Masuk ke Cashflow"),
+                new H1("Masuk ke Cashflow"),
                 new Paragraph("Catat pemasukan dan pengeluaran Anda."),
                 username, password, progress, loginButton,
                 new Paragraph(new RouterLink("Belum punya akun? Daftar", RegisterView.class)));

@@ -54,6 +54,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         this.presenter = presenter;
 
         username.setReadOnly(true);
+        getElement().setAttribute("role", "main");
         username.setWidthFull();
         fullName.setWidthFull();
         newPassword.setWidthFull();

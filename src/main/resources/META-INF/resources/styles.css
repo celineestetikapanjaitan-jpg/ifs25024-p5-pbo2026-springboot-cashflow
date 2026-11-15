@@ -45,6 +45,12 @@ vaadin-menu-bar-button[disabled] {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
+.auth-card h1 {
+    margin: 0 0 0.25rem;
+    font-size: var(--lumo-font-size-xxl);
+    line-height: 1.2;
+}
+
 /* Dialog modal: header biru primer, footer abu-abu terang, tombol di sisi kanan. */
 vaadin-dialog-overlay::part(header) {
     background: #2563EB;
@@ -66,4 +72,97 @@ vaadin-dialog-overlay::part(footer) {
     height: 4px;
     background: linear-gradient(90deg, #2563EB, #60A5FA, #2563EB);
     box-shadow: 0 0 8px #2563EB;
+}
+
+/* ---------------------------------------------------------------------------
+   Warna dengan kontras cukup (WCAG AA) dan teks sekunder yang lebih gelap.
+   --------------------------------------------------------------------------- */
+html {
+    --lumo-primary-color: #1D4ED8;
+    --lumo-primary-text-color: #1D4ED8;
+    --lumo-success-color: #15803D;
+    --lumo-success-text-color: #166534;
+    --lumo-error-color: #B91C1C;
+    --lumo-error-text-color: #B91C1C;
+    --lumo-secondary-text-color: #4B5563;
+}
+
+/* ---------------------------------------------------------------------------
+   Kartu ringkasan: grid yang menyesuaikan lebar layar.
+   --------------------------------------------------------------------------- */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.summary-card {
+    min-width: 0;
+    border-left: 6px solid var(--card-accent);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    background: var(--card-bg);
+}
+
+.summary-caption {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--card-text);
+}
+
+.summary-value {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: clamp(1.1rem, 4.5vw, 1.5rem);
+    font-weight: 700;
+    color: var(--card-text);
+    overflow-wrap: anywhere;
+}
+
+.summary-total   { --card-bg: #E0E7FF; --card-accent: #4338CA; --card-text: #3730A3; }
+.summary-income  { --card-bg: #DCFCE7; --card-accent: #16A34A; --card-text: #166534; }
+.summary-expense { --card-bg: #FEE2E2; --card-accent: #DC2626; --card-text: #991B1B; }
+.summary-balance { --card-bg: #DBEAFE; --card-accent: #1D4ED8; --card-text: #1E40AF; }
+
+/* ---------------------------------------------------------------------------
+   Toolbar: kolom isian melebar, tombol turun ke baris berikutnya di layar sempit.
+   --------------------------------------------------------------------------- */
+.toolbar > vaadin-text-field {
+    flex: 1 1 220px;
+}
+
+.toolbar > vaadin-combo-box {
+    flex: 1 1 180px;
+}
+
+.toolbar > vaadin-button {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 600px) {
+    .toolbar > vaadin-text-field,
+    .toolbar > vaadin-combo-box {
+        flex: 1 1 100%;
+    }
+
+    .toolbar > vaadin-button {
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    .summary-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .summary-card {
+        padding: 0.7rem 0.8rem;
+    }
+
+    .auth-card {
+        padding: 1.1rem;
+    }
+
+    .app-navbar {
+        padding: 0.25rem 0.5rem;
+    }
 }

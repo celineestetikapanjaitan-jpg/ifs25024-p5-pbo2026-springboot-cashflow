@@ -42,6 +42,7 @@ public class UserTransactionsView extends VerticalLayout implements BeforeEnterO
         this.userUseCase = userUseCase;
         this.userRepository = userRepository;
         this.presenter = presenter;
+        getElement().setAttribute("role", "main");
 
         grid.addColumn(Transaction::getId).setHeader("ID").setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(Transaction::getDescription).setHeader("Keterangan").setFlexGrow(1);

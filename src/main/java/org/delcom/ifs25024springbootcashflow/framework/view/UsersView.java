@@ -35,6 +35,7 @@ public class UsersView extends VerticalLayout implements BeforeEnterObserver {
         this.userUseCase = userUseCase;
         this.userRepository = userRepository;
         this.presenter = presenter;
+        getElement().setAttribute("role", "main");
 
         grid.addColumn(User::getId).setHeader("ID").setAutoWidth(true).setFlexGrow(0);
         grid.addColumn(User::getUsername).setHeader("Username").setSortable(true);

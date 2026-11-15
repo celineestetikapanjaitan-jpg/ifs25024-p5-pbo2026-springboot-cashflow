@@ -5,7 +5,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -43,6 +43,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         this.userRepository = userRepository;
 
         setSizeFull();
+        getElement().setAttribute("role", "main");
         setAlignItems(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
 
@@ -65,7 +66,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         progress.setVisible(false);
 
         Div card = new Div(
-                new H2("Buat akun Cashflow"),
+                new H1("Buat akun Cashflow"),
                 fullName, username, password, confirm, progress, registerButton,
                 new Paragraph(new RouterLink("Sudah punya akun? Masuk", LoginView.class)));
         card.addClassName("auth-card");

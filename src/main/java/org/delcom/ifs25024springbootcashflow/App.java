@@ -2,6 +2,7 @@ package org.delcom.ifs25024springbootcashflow;
 
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.component.page.Meta;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * agar placeholder seperti {@code ${DB_HOST}} di application.yaml terisi dari file .env.
  */
 @SpringBootApplication
+@Meta(name = "description", content = "Aplikasi catatan keuangan pribadi: catat pemasukan dan pengeluaran, lihat saldo, cari, dan urutkan transaksi.")
 @StyleSheet(Lumo.STYLESHEET)
 @StyleSheet("styles.css")
 @PWA(name = "Cashflow", shortName = "Cashflow", iconPath = "icons/icon.png")
