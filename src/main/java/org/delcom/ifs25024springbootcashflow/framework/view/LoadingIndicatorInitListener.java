@@ -30,7 +30,15 @@ public class LoadingIndicatorInitListener implements VaadinServiceInitListener {
     private static final String BOOT_SCRIPT = """
             (function () {
                 var shellRemoved = false;
-                var update = function () {
+                var scheduled = false;
+                var observer = null;
+                var finishShell = function () {
+                    shellRemoved = true;
+                    observer.disconnect();
+                    observer.observe(document.body, { childList: true });
+                };
+                var run = function () {
+                    scheduled = false;
                     document.querySelectorAll('vaadin-connection-indicator').forEach(function (el) {
                         if (el.getAttribute('role') !== 'status') {
                             el.setAttribute('role', 'status');
@@ -40,20 +48,26 @@ public class LoadingIndicatorInitListener implements VaadinServiceInitListener {
                     if (!shellRemoved) {
                         var shell = document.getElementById('boot-shell');
                         if (!shell) {
-                            shellRemoved = true;
+                            finishShell();
                         } else if (document.querySelector('[role="main"]:not(#boot-shell)')) {
                             shell.remove();
-                            shellRemoved = true;
+                            finishShell();
                         }
                     }
                 };
-                new MutationObserver(update).observe(document.body, { childList: true, subtree: true });
+                observer = new MutationObserver(function () {
+                    if (!scheduled) {
+                        scheduled = true;
+                        requestAnimationFrame(run);
+                    }
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
                 setTimeout(function () {
                     var shell = document.getElementById('boot-shell');
                     if (shell) { shell.remove(); }
-                    shellRemoved = true;
+                    if (!shellRemoved) { finishShell(); }
                 }, 15000);
-                update();
+                run();
             })();
             """;
 
